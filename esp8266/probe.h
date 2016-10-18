@@ -59,11 +59,14 @@ struct Probe
 	{
 		StaticJsonBuffer<200> jsonBuffer;
 		JsonObject &root = jsonBuffer.parseObject(json);
+		Probe p;
+		if (!root.success()) {
+			return p;
+		}
 		const char *name = root["name"];
 		float adc = root["adc"];
 		float ohm = root["ohm"];
 		float temperatureInC = root["temperatureInC"];
-		Probe p;
 		p.name = String(name);
 		p.adc = adc;
 		p.ohm = ohm;
