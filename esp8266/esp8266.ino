@@ -29,17 +29,14 @@ void setup()
 		DEBUG.println("mDNS responder active");
 	}
 
-	www.on("/probe/pit", [] {
+	auto emit = [] (Probe &probe) {
 		char buf[200];
-		pit.toJson(buf, sizeof(buf));
-		www.send(200, "application/json", buf); 
-	});
-	www.on("/probe/food", [] {
-		char buf[200];
-		food.toJson(buf, sizeof(buf));
-		www.send(200, "application/json", buf); 
-	});
+		probe.toJson(buf, sizeof(buf));
+		www.send(200, "application/json", buf);
+	};
 
+	www.on("/probe/pit", [emit] { emit(pit); });
+	www.on("/probe/food", [emit] { emit(food); });
 	www.serveStatic("", SPIFFS, "");
 
 	www.begin();

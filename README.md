@@ -20,7 +20,7 @@ The Steinhart algorithm implementation was lifted and tweaked from an Adafruit t
 
 Pin A0 senses a 1MOhm food probe.
 
-Pin A1 senses a 43kOHm-ish food probe.
+Pin A1 senses a 43kOhm-ish food probe.
 
 TX is wired to ESP8266's RX.
 
