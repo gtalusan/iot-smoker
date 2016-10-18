@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+
+		<script type="text/javascript" src="js/jquery.thermometer.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				function blendColors(c0, c1, p) {
+					var f=parseInt(c0.slice(1),16),t=parseInt(c1.slice(1),16),R1=f>>16,G1=f>>8&0x00FF,B1=f&0x0000FF,R2=t>>16,G2=t>>8&0x00FF,B2=t&0x0000FF;
+					return "#"+(0x1000000+(Math.round((R2-R1)*p)+R1)*0x10000+(Math.round((G2-G1)*p)+G1)*0x100+(Math.round((B2-B1)*p)+B1)).toString(16).slice(1);
+				}
+
+				$('#pit').thermometer( {
+					startValue: 0,
+					height: "100%",
+					width: "100%",
+					bottomText: "0C",
+					topText: "Smoker",
+					animationSpeed: 300,
+					maxValue: 500,
+					minValue: 0,
+					liquidColour: function( value ) {
+						return blendColors("#ff7700","#ff0000", value / 500);
+					},
+					valueChanged: function(value) {
+						$('#pit').thermometer('setMiddleText', value.toFixed(2));
+					}
+				});
+
+				$('#food').thermometer( {
+					startValue: 0,
+					height: "100%",
+					width: "100%",
+					bottomText: "0 ",
+					topText: "Food",
+					animationSpeed: 300,
+					maxValue: 500,
+					minValue: 0,
+					liquidColour: function( value ) {
+						return blendColors("#ff7700","#ff0000", value / 500); 
+					},
+					valueChanged: function(value) {
+						$('#food').thermometer('setMiddleText', value.toFixed(2));
+					}
+				});
+
+				window.setInterval(function() {
+					var pit = $.getJSON('probe/pit', function() {
+						console.log("GOT PROBE/PIT");
+					}).done(function(data) {
+						$('#pit').thermometer('setValue', data.temperatureInC);
+						console.log(data);
+					}).fail(function() {
+						console.log("FAIL");
+					});
+					var food = $.getJSON('probe/food', function() {
+						console.log("GOT PROBE/FOOD");
+					}).done(function(data) {
+						$('#food').thermometer('setValue', data.temperatureInC);
+						console.log(data);
+					}).fail(function() {
+						console.log("FAIL");
+					});
+				}, 5000);
+			} );
+		</script>
+		<style type="text/css">
+			body { display: flex }
+			span { flex: 1; }
+		</style>
+	</head>
+
+	<body>
+		<span id="pit"></span><span id="food"></span>
+	</body>
+</html>
