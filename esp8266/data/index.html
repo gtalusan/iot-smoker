@@ -36,10 +36,10 @@
 					bottomText: "0 C",
 					topText: "Food",
 					animationSpeed: 300,
-					maxValue: 350,
+					maxValue: 100,
 					minValue: 0,
 					liquidColour: function( value ) {
-						return blendColors("#ff7700","#ff0000", value / 350);
+						return blendColors("#0000ff","#00ff00", value / 100);
 					},
 					valueChanged: function(value) {
 						$('#food').thermometer('setMiddleText', value.toFixed(2));
