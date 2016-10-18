@@ -16,13 +16,13 @@
 					startValue: 0,
 					height: "100%",
 					width: "100%",
-					bottomText: "0C",
+					bottomText: "0 C",
 					topText: "Smoker",
 					animationSpeed: 300,
-					maxValue: 500,
+					maxValue: 400,
 					minValue: 0,
 					liquidColour: function( value ) {
-						return blendColors("#ff7700","#ff0000", value / 500);
+						return blendColors("#ff7700","#ff0000", value / 400);
 					},
 					valueChanged: function(value) {
 						$('#pit').thermometer('setMiddleText', value.toFixed(2));
@@ -33,13 +33,13 @@
 					startValue: 0,
 					height: "100%",
 					width: "100%",
-					bottomText: "0 ",
+					bottomText: "0 C",
 					topText: "Food",
 					animationSpeed: 300,
-					maxValue: 500,
+					maxValue: 350,
 					minValue: 0,
 					liquidColour: function( value ) {
-						return blendColors("#ff7700","#ff0000", value / 500); 
+						return blendColors("#ff7700","#ff0000", value / 350);
 					},
 					valueChanged: function(value) {
 						$('#food').thermometer('setMiddleText', value.toFixed(2));
@@ -48,18 +48,14 @@
 
 				window.setInterval(function() {
 					var pit = $.getJSON('probe/pit', function() {
-						console.log("GOT PROBE/PIT");
 					}).done(function(data) {
 						$('#pit').thermometer('setValue', data.temperatureInC);
-						console.log(data);
 					}).fail(function() {
 						console.log("FAIL");
 					});
 					var food = $.getJSON('probe/food', function() {
-						console.log("GOT PROBE/FOOD");
 					}).done(function(data) {
 						$('#food').thermometer('setValue', data.temperatureInC);
-						console.log(data);
 					}).fail(function() {
 						console.log("FAIL");
 					});
